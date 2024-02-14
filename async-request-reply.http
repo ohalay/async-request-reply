@@ -1,0 +1,25 @@
+@base_url = http://localhost:5204
+
+GET {{base_url}}/api/todos
+
+###
+# @name createTodo
+POST {{base_url}}/api/todos
+Content-Type: application/json
+
+{
+    "dueBy": "2024-02-14",
+    "title": "Write an article"
+}
+
+###
+@jobLocation = {{createTodo.response.headers.Location}}
+
+# @name job
+GET {{base_url}}{{jobLocation}}
+Accept: application/json
+
+###
+@todoId = {{job.response.body.$.id}}
+
+GET {{base_url}}/api/todos/{{todoId}}
